@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html style="background-color: rgb(4, 17, 48);">
+<head>
+    <meta charset="UTF-8">
+    <title>JiraGalance</title>
+    <script src="https://cdn.bootcss.com/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://assets.pyecharts.org/assets/echarts.min.js"></script>
+</head>
+<h4 style="padding: 0%;text-align: center;color: white;">9617项目Jira问题统计</h4>
+<style>
+    .style_first_row_left{
+        width: 32.5%;
+        height: 250px;
+        margin: 3px;
+        float: left;
+        -webkit-tap-highlight-color: transparent;
+        background: rgba(4, 12, 79, 0.98);
+        border: 2px solid rgba(14, 101, 187, 0.66);
+        border-radius: 0px;
+        color: rgb(192, 197, 237);
+    }
+    .style_first_row_center{
+        width: 32.5%;
+        height: 250px;
+        margin: 3px;
+        float:left;
+        -webkit-tap-highlight-color: transparent;
+        background: rgba(4, 12, 79, 0.98);
+        border: 2px solid rgba(14, 101, 187, 0.66);
+        border-radius: 0px;
+        color: rgb(192, 197, 237);
+    }
+    .style_first_row_right{
+        width: 32.5%;
+        height: 250px;
+        margin: 2px;
+        float:right;
+        -webkit-tap-highlight-color: transparent;
+        background: rgba(4, 12, 79, 0.98);
+        border: 2px solid rgba(14, 101, 187, 0.66);
+        border-radius: 0px;
+        color: rgb(192, 197, 237);
+    }
+    .style_second_row_left{
+        width: 49%;
+        height: 250px;
+        margin: 3px;
+        float:left;
+        -webkit-tap-highlight-color: transparent;
+        background: rgba(4, 12, 79, 0.98);
+        border: 2px solid rgba(14, 101, 187, 0.66);
+        border-radius: 0px;
+        color: rgb(192, 197, 237);
+    }
+    .style_second_row_right{
+        width: 49%;
+        height: 250px;
+        margin: 3px;
+        float:right;
+        -webkit-tap-highlight-color: transparent;
+        background: rgba(4, 12, 79, 0.98);
+        border: 2px solid rgba(14, 101, 187, 0.66);
+        border-radius: 0px;
+        color: rgb(192, 197, 237);
+    }
+
+</style>
+
+<body>
+    <div id="first_row;" style="height:260px;">
+        <div id="first_row_left"    class="style_first_row_left"></div>
+        <div id="first_row_center"  class="style_first_row_center"></div>
+        <div id="first_row_right"   class="style_first_row_right"></div>
+    </div>
+
+    <div id="second_row" style="height:260px;">
+        <div id="second_row_left"   class="style_second_row_left"></div>
+        <div id="second_row_right"  class="style_second_row_right"></div>
+    </div>
+
+    <script>
+        $(
+            function () {
+                var mPie = echarts.init(document.getElementById('first_row_left'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "/allIssuesPriority",
+                    dataType: 'json',
+                    success: function (result) {
+                        mPie.setOption(result);
+                    }
+                });
+            }
+        )
+        
+    </script>
+
+    <script>
+        $(
+            function () {
+                var mPie = echarts.init(document.getElementById('first_row_center'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "/skwMtkGoogle",
+                    dataType: 'json',
+                    success: function (result) {
+                        mPie.setOption(result);
+                    }
+                });
+            }
+        )
+    </script>
+
+    <script>
+        $(
+            function () {
+                var mPie = echarts.init(document.getElementById('first_row_right'), 'white', {renderer: 'canvas'});
+                $.ajax({
+                    type: "GET",
+                    url: "/allIssuesStatus",
+                    dataType: 'json',
+                    success: function (result) {
+                        mPie.setOption(result);
+                    }
+                });
+            }
+        )
+        
+    </script>
+
+    <script>
+        $(
+            function () {
+                var mChart = echarts.init(document.getElementById('second_row_left'), 'white', {renderer: 'canvas'});
+                /*
+                mChart.showLoading(); // 显示加载动画
+                $.get("./jiradatas").done(function (data){
+                    myChart.hideLoading(); // 隐藏加载动画
+                    myChart.setOption({
+                        xAxis: {
+                            data: data.month
+                        },
+                        series: [{
+                            name: '蒸发量', // 根据名字对应到相应的系列
+                            data: data.evaporation.map(parseFloat) // 转化为数字（注意map）
+                        },{
+                            name: '降水量',
+                            data: data.precipitation.map(parseFloat)
+                        }]
+                    });
+                });
+                */
+
+                $.ajax({
+                    type: "GET",
+                    url: "/allOwnerIssues",
+                    dataType: 'json',
+                    success: function (result) {
+                        mChart.setOption(result);
+                    }
+                });
+            }
+        )
+    </script>
+
+    <script>
+        $(
+            function () {
+                var mChart = echarts.init(document.getElementById('second_row_right'), 'white', {renderer: 'canvas'});
+                /*
+                mChart.showLoading(); // 显示加载动画
+                $.get("./jiradatas").done(function (data){
+                    myChart.hideLoading(); // 隐藏加载动画
+                    myChart.setOption({
+                        xAxis: {
+                            data: data.month
+                        },
+                        series: [{
+                            name: '蒸发量', // 根据名字对应到相应的系列
+                            data: data.evaporation.map(parseFloat) // 转化为数字（注意map）
+                        },{
+                            name: '降水量',
+                            data: data.precipitation.map(parseFloat)
+                        }]
+                    });
+                });
+                */
+
+                $.ajax({
+                    type: "GET",
+                    url: "/allIssuesResolvedStatus",
+                    dataType: 'json',
+                    success: function (result) {
+                        mChart.setOption(result);
+                    }
+                });
+            }
+        )
+    </script>
+
+
+</body>
+</html>
